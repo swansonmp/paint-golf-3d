@@ -5,21 +5,21 @@ export default class Game {
   constructor(renderer) {
     this.renderer = renderer;
     
-    this.imageSize = { width: 2000, height: 2000 };
-    this.scale = 2;
-    this.courseWidth = this.imageSize.width  / this.scale;  // Visual size X
-    this.courseDepth = this.imageSize.height / this.scale;  // Visual size Z
-    this.terrainWidth = this.imageSize.width  / 100;        // Number of vertices
-    this.terrainDepth = this.imageSize.height / 100;
+    this.mapSize = { width: 700, height: 700 };
+    this.courseWidth = this.mapSize.width;  // Visual size X
+    this.courseDepth = this.mapSize.height;  // Visual size Z
+    this.terrainWidth = 700;        // Number of vertices
+    this.terrainDepth = 700;
     
     this.terrainMesh;
     
     this.initHeightData(this.terrainWidth, this.terrainDepth);
     this.initScene();
     this.initBall();
+    this.initGround();
+    this.initTree();
     this.initCamera();
     this.initControls();
-    this.initGround();
 
     window.addEventListener("resize", resize => {
       this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -67,8 +67,8 @@ export default class Game {
       5000
     );
     this.camera.position.y = 100;
-    this.camera.position.x = this.courseWidth;
-    this.camera.position.z = this.courseDepth;
+    this.camera.position.x = this.courseWidth + this.ball.position.x;
+    this.camera.position.z = this.courseDepth + this.ball.position.z;
     this.camera.lookAt(this.ball.position);
   }
   
@@ -84,15 +84,15 @@ export default class Game {
         this.terrainDepth - 1
     );
     geometry.rotateX(-Math.PI / 2);
-
+    
     let vertices = geometry.attributes.position.array;
 
     for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
       // j + 1 is the y component
       vertices[j + 1] = this.heightData[i];
     }
-
-    geometry.computeVertexNormals();
+    
+    //geometry.computeVertexNormals();
 
     let groundMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
     let textureLoader = new THREE.TextureLoader();
@@ -105,8 +105,20 @@ export default class Game {
     this.scene.add(this.terrainMesh);
   }
   
+  initTree() {
+    //let spriteMap = new THREE.TextureLoader().load( "sprite.png" );
+    //let spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
+    let sprite = new THREE.Sprite();
+    sprite.center.set(0.5, 0);
+    sprite.scale.set(10, 25, 10);
+    sprite.position.set(250, 0, 250);
+    console.log(sprite.position);
+    this.scene.add(sprite);
+    
+  }
+  
   initBall() {
-    let radius = 1;
+    let radius = 5;
     this.ball = new THREE.Mesh( 
       new THREE.SphereBufferGeometry(radius, 8,8 ), 
       new THREE.MeshBasicMaterial({ color: 0xffffff })
