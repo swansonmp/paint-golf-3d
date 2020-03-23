@@ -1,23 +1,19 @@
 import * as THREE from './lib/three.module.js';
 import { OrbitControls } from './lib/OrbitControls.js';
+import { ColladaLoader } from './lib/ColladaLoader.js';
 
 export default class Game {
   constructor(renderer) {
     this.renderer = renderer;
     
-    this.mapSize = { width: 700, height: 700 };
-    this.courseWidth = this.mapSize.width;  // Visual size X
-    this.courseDepth = this.mapSize.height;  // Visual size Z
-    this.terrainWidth = 700;        // Number of vertices
-    this.terrainDepth = 700;
+    this.courseSize = { x: 700, z: 700 };
     
+    this.scene = new THREE.Scene();
     this.terrainMesh;
     
-    this.initHeightData(this.terrainWidth, this.terrainDepth);
     this.initScene();
     this.initBall();
-    this.initGround();
-    this.initTree();
+    //this.initTree();
     this.initCamera();
     this.initControls();
 
@@ -36,24 +32,33 @@ export default class Game {
     this.renderer.render(this.scene, this.camera);
   }
   
-  initHeightData(width, depth) {
-    // Generates the height data
-    let size = width * depth;
-    let data = new Float32Array(size);
-    let p = 0;
-    for (let j = 0; j < depth; j++) {
-      for (let i = 0; i < width; i++) {
-        let height = 0;
-        data[p] = height;
-        p++;
-      }
-    }
-    this.heightData = data;
-  }
-  
   initScene() {
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x87ceeb);
+    let scene = this.scene;
+    let loader = new ColladaLoader();
+    loader.load(
+      './../assets/terrain.dae',
+      function(collada) {
+        scene.add(collada.scene);
+        
+        scene.background = new THREE.Color(0x87ceeb);
+    
+        let light = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
+        scene.add(light);
+        let terrain = scene.getObjectByName("Plane");
+        terrain.material = new THREE.MeshNormalMaterial( { flatShading: true, color: 0x22b14c } );
+      },
+      function(data) {
+        /*
+        if (data.total) {
+          let percentLoaded = 100 * data.loaded / data.total;
+          console.log("Progress: " + percentLoaded.toFixed(2) + "%");
+        }
+        else {
+          console.log("Progress: " + data.loaded + " bytes");
+        }
+        */
+      }
+    );
   }
   
   initCamera() {
@@ -67,8 +72,8 @@ export default class Game {
       5000
     );
     this.camera.position.y = 100;
-    this.camera.position.x = this.courseWidth + this.ball.position.x;
-    this.camera.position.z = this.courseDepth + this.ball.position.z;
+    this.camera.position.x = this.courseSize.x + this.ball.position.x;
+    this.camera.position.z = this.courseSize.z + this.ball.position.z;
     this.camera.lookAt(this.ball.position);
   }
   
@@ -76,36 +81,8 @@ export default class Game {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
   }
   
-  initGround() {
-    let geometry = new THREE.PlaneBufferGeometry(
-        this.courseWidth, 
-        this.courseDepth, 
-        this.terrainWidth - 1, 
-        this.terrainDepth - 1
-    );
-    geometry.rotateX(-Math.PI / 2);
-    
-    let vertices = geometry.attributes.position.array;
-
-    for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-      // j + 1 is the y component
-      vertices[j + 1] = this.heightData[i];
-    }
-    
-    //geometry.computeVertexNormals();
-
-    let groundMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    let textureLoader = new THREE.TextureLoader();
-    textureLoader.load( "./../assets/course.png", function(texture) {
-        groundMaterial.map = texture;
-        groundMaterial.needsUpdate = true;
-    });
-
-    this.terrainMesh = new THREE.Mesh(geometry, groundMaterial);
-    this.scene.add(this.terrainMesh);
-  }
-  
   initTree() {
+    /*
     //let spriteMap = new THREE.TextureLoader().load( "sprite.png" );
     //let spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap } );
     let sprite = new THREE.Sprite();
@@ -114,11 +91,11 @@ export default class Game {
     sprite.position.set(250, 0, 250);
     console.log(sprite.position);
     this.scene.add(sprite);
-    
+    */
   }
   
   initBall() {
-    let radius = 5;
+    let radius = 0.5;
     this.ball = new THREE.Mesh( 
       new THREE.SphereBufferGeometry(radius, 8,8 ), 
       new THREE.MeshBasicMaterial({ color: 0xffffff })
