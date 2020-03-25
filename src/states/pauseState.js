@@ -3,13 +3,18 @@ import State from "./state.js";
 export default class PauseState extends State {
   constructor(game) {
     super(game);
-    this.createPauseFilter();
-    this.createPauseText();
+    this.elements = [
+      { id: "pauseFilter" },
+      { id: "pauseText", text: "Paused"}
+    ];
+    this.elements.forEach(element => {
+      game.uiHelper.createElement(element);
+    });
   }
   
   start() {
     document.getElementById("pauseFilter").style.display = "block";
-    document.getElementById("pauseText").style.display = "block";
+    document.getElementById("pauseText").style.display = "block"; 
   }
   
   stop() {
@@ -19,19 +24,6 @@ export default class PauseState extends State {
   
   render() {
     this.game.graphics.render();
-  }
-  
-  createPauseFilter() {
-    let div = document.createElement("div");
-    div.id = "pauseFilter";
-    document.getElementById("container").appendChild(div);
-  }
-  
-  createPauseText() {
-    let div = document.createElement("div");
-    div.id = "pauseText";
-    div.textContent = "Paused";
-    document.getElementById("container").appendChild(div);
   }
   
   handleEnter() { this.game.setState(this.game.getIdleState()); }

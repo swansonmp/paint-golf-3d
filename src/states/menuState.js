@@ -3,9 +3,9 @@ import State from "./state.js";
 export default class MenuState extends State {
   constructor(game) {
     super(game);
-    this.createBackground();
-    this.createTitle();
-    this.createSubtitle();
+    this.game.uiHelper.createElementWithID("div", "background");
+    this.game.uiHelper.createElementWithID("div", "title", "rogolf");
+    this.game.uiHelper.createElementWithID("div", "subtitle", "Press Enter");
   }
   
   start() {
@@ -28,25 +28,6 @@ export default class MenuState extends State {
     
   }
   
-  createBackground() {
-    let div = document.createElement("div");
-    div.id = "background";
-    document.getElementById("container").appendChild(div);
-  }
-  
-  createTitle() {
-    let div = document.createElement("div");
-    div.id = "title";
-    div.textContent = "rogolf";
-    document.getElementById("container").appendChild(div);
-  }
-  
-  createSubtitle() {
-    let div = document.createElement("div");
-    div.id = "subtitle";
-    div.textContent = "Press Enter";
-    document.getElementById("container").appendChild(div);
-  }
-  
   handleEnter() { this.game.setState(this.game.getIdleState()); }
+  
 }

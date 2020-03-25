@@ -1,5 +1,6 @@
 import Input from "./input.js";
 import Graphics from "./graphics.js";
+import UIHelper from "./uiHelper.js";
 
 import Ball from "./objects/ball.js";
 
@@ -11,6 +12,7 @@ export default class Game {
   constructor(renderer) {
     this.graphics = new Graphics(this, renderer);
     this.input = new Input(this);
+    this.uiHelper = new UIHelper();
     
     this.ball = new Ball(this);
     
@@ -40,7 +42,7 @@ export default class Game {
   getPauseState() { return this.pauseState; }
   
   onWindowResize() {
-    this.graphics.resize();
+    this.graphics.onWindowResize();
   }
   
 }

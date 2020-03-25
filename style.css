@@ -56,6 +56,20 @@ img {
   50%  { color: DimGrey; }
   100% { color: white; }
 }
+.heading {
+  position: absolute;
+  padding: 24px;
+  z-index: 1;
+  display: none;
+  
+  font: bold 48px FreeMono, monospace;
+  color: white;
+}
+.items {
+  border: none;
+  
+  display: none;
+}
 #pauseFilter {
   position: absolute;
   top: 0px;
