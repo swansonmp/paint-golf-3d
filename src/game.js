@@ -10,9 +10,9 @@ import PauseState from "./states/pauseState.js";
 
 export default class Game {
   constructor(renderer) {
-    this.graphics = new Graphics(this, renderer);
     this.input = new Input(this);
     this.uiHelper = new UIHelper();
+    this.graphics = new Graphics(this, renderer);
     
     this.ball = new Ball(this);
     
@@ -21,15 +21,11 @@ export default class Game {
     this.pauseState = new PauseState(this);
     
     this.state = this.getMenuState();
+    this.state.start();
   }
   
-  update(deltaTime) {
-    this.state.update(deltaTime);
-  }
-  
-  render() {
-    this.state.render();
-  }
+  update(deltaTime) { this.state.update(deltaTime); }
+  render() { this.state.render(); }
   
   setState(state) {
     this.state.stop();
@@ -41,8 +37,6 @@ export default class Game {
   getIdleState() { return this.idleState; }
   getPauseState() { return this.pauseState; }
   
-  onWindowResize() {
-    this.graphics.onWindowResize();
-  }
+  onWindowResize() { this.graphics.onWindowResize(); }
   
 }

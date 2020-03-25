@@ -6,14 +6,12 @@ export default class IdleState extends State {
   }
   
   update(deltaTime) {
-    this.game.graphics.update();
+    this.game.ball.update(deltaTime);
+    this.game.graphics.update(deltaTime);
   }
   
-  render() {
-    this.game.graphics.render();
-  }
+  render() { this.game.graphics.render(); }
   
-  handleEscape() {
-    this.game.setState(this.game.getPauseState());
-  }
+  handleEscape() { this.game.setState(this.game.getPauseState()); }
+  
 }

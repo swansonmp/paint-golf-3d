@@ -10,38 +10,6 @@ export default class Graphics {
     this.initScene();
   }
   
-  init() {
-    this.initBall();
-    //this.initTree();
-    this.initCamera();
-    this.initControls();
-    
-    //raycasting demo
-    this.down = new THREE.Vector3(0, -1, 0);
-    this.raycaster = new THREE.Raycaster();
-    this.initialized = true;
-  }
-  
-  update(deltaTime) {
-    if (this.initialized) {
-      this.ball.position.x += 0.1;
-      this.ball.position.z += 0.1;
-      this.raycaster.set(this.ball.position, this.down);
-      let intersects = this.raycaster.intersectObject(this.terrainMesh);
-      if (intersects[0] != undefined) {
-        this.ball.position.y = intersects[0].point.y + 0.5;
-        this.camera.position.y = 50;
-        this.camera.position.x = this.courseSize.x/2 + this.ball.position.x;
-        this.camera.position.z = this.courseSize.z/2 + this.ball.position.z;
-        this.camera.lookAt(this.ball.position);
-      }
-    }
-  }
-  
-  render() {
-    this.renderer.render(this.scene, this.camera);
-  }
-  
   initScene() {
     this.scene = new THREE.Scene();
     let graphics = this;
@@ -58,18 +26,19 @@ export default class Graphics {
         
         graphics.init();  // Finish initialization
       },
-      function(data) {
-        /*
-        if (data.total) {
-          let percentLoaded = 100 * data.loaded / data.total;
-          console.log("Progress: " + percentLoaded.toFixed(2) + "%");
-        }
-        else {
-          console.log("Progress: " + data.loaded + " bytes");
-        }
-        */
-      }
+      function(data) { }
     );
+  }
+  
+  init() {
+    this.initBall();
+    //this.initTree();
+    this.initCamera();
+    this.initControls();
+    
+    // For raycasting
+    this.down = new THREE.Vector3(0, -1, 0);
+    this.raycaster = new THREE.Raycaster();
   }
   
   initCamera() {
@@ -82,10 +51,7 @@ export default class Graphics {
       0, 
       5000
     );
-    this.camera.position.y = 100;
-    this.camera.position.x = this.courseSize.x + this.ball.position.x;
-    this.camera.position.z = this.courseSize.z + this.ball.position.z;
-    this.camera.lookAt(this.ball.position);
+    this.camera.position.set(0, 100, 0);
   }
   
   initControls() {
@@ -108,11 +74,40 @@ export default class Graphics {
   initBall() {
     let radius = 0.5;
     this.ball = new THREE.Mesh( 
-      new THREE.SphereBufferGeometry(radius, 8,8 ), 
+      new THREE.SphereBufferGeometry(radius, 8, 8), 
       new THREE.MeshBasicMaterial({ color: 0xffffff })
     );
-    this.ball.position.set(-100, 1000, -100);
     this.scene.add(this.ball);
+  }
+  
+  update(deltaTime) {
+    // Set ball's graphical position
+    this.ball.position.copy(this.game.ball.position);
+    this.ball.position.y += 0.5;
+    
+    //this.updateCamera();
+  }
+  
+  updateCamera() {
+    this.camera.position.x = this.courseSize.x / 2 + this.ball.position.x;
+    this.camera.position.y = 75;
+    this.camera.position.z = this.courseSize.z / 2 + this.ball.position.z;
+    this.camera.lookAt(this.ball.position);
+  }
+  
+  render() {
+    this.renderer.render(this.scene, this.camera);
+  }
+  
+  getHeight(object) {
+    this.raycaster.set(object, this.down);
+    let intersects = this.raycaster.intersectObject(this.terrainMesh);
+    if (intersects[0] != undefined) {
+      return intersects[0].point.y;
+    }
+    else {
+      return undefined;
+    }
   }
   
   onWindowResize() {
