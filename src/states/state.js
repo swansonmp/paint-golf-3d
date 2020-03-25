@@ -2,8 +2,12 @@ export default class State {
   constructor(game, elementSpecs) {
     this.game = game;
     
-    if (elementSpecs == undefined) { this.elementSpecs = []; }
-    else { this.elementSpecs = elementSpecs; }
+    if (elementSpecs == undefined) {
+      this.elementSpecs = [];
+    }
+    else {
+      this.elementSpecs = elementSpecs;
+    }
     let elements = [];
     this.elementSpecs.forEach(spec => {
       elements.push(game.uiHelper.createElement(spec));

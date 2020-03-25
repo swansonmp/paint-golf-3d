@@ -56,6 +56,21 @@ img {
   50%  { color: DimGrey; }
   100% { color: white; }
 }
+#ballSVG {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  display: block;
+  overflow: visible;
+}
+#ballCircle {
+  cx: 0;
+  cy: 0;
+  r: 1000;
+  fill: white;
+  z-index: 1;
+  display: block;
+}
 .heading {
   position: absolute;
   padding: 48px;
