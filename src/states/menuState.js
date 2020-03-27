@@ -1,6 +1,7 @@
 import State from "./state.js";
 
 import TitleState from "./menus/titleState.js";
+import MainState from "./menus/mainState.js";
 
 export default class MenuState extends State {
   constructor(game) {
@@ -12,8 +13,9 @@ export default class MenuState extends State {
     this.createBall();
     
     this.titleState = new TitleState(game);
+    this.mainState = new MainState(game);
     
-    this.state = this.titleState;
+    this.state = this.getTitleState();
     this.state.start();
   }
   
@@ -30,6 +32,7 @@ export default class MenuState extends State {
   }
   
   getTitleState() { return this.titleState; }
+  getMainState() { return this.mainState; }
   
   setState(state) {
     this.state.stop();

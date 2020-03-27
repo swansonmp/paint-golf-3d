@@ -14,9 +14,7 @@ export default class TitleState extends State {
   stop() { this.hideElements(); }
   
   handleConfirm() {
-    this.game.setState(this.game.getIdleState());
-    //this.game.menuState.setState(this.game.menuState.getMainMenuState());
+    this.game.menuState.setState(this.game.menuState.getMainState());
   }
-  handleBack() { }
   
 }

@@ -14,7 +14,7 @@ export default class UIHelper {
       element.id = spec.id;
     }
     if (spec.class_ != undefined) {
-      element.class = spec.class_;
+      element.className = spec.class_;
     }
     if (spec.text != undefined) {
       element.textContent = spec.text;

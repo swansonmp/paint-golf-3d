@@ -73,17 +73,25 @@ img {
 }
 .heading {
   position: absolute;
-  padding: 48px;
+  top: 0%;
+  left: 0%;
+  padding: 32px 96px;
+  z-index: 1;
+  display: none;
+  
+  font: bold 84px FreeMono, monospace;
+  color: white;
+}
+.item1 {
+  position: absolute;
+  top: 128px;
+  left: 96px;
+  padding: 32px 96px;
   z-index: 1;
   display: none;
   
   font: bold 48px FreeMono, monospace;
   color: white;
-}
-.items {
-  border: none;
-  
-  display: none;
 }
 #pauseFilter {
   position: absolute;
