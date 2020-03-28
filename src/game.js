@@ -10,6 +10,7 @@ import Ball from "./objects/ball.js";
 import MenuState from "./states/menuState.js";
 import StartState from "./states/startState.js";
 import LoadState from  "./states/loadState.js";
+import VerifyState from  "./states/verifyState.js";
 import PrepareState from "./states/prepareState.js";
 import IdleState from "./states/idleState.js";
 import PauseState from "./states/pauseState.js";
@@ -38,6 +39,7 @@ export default class Game {
     this.menuState = new MenuState(this);
     this.startState = new StartState(this);
     this.loadState = new LoadState(this);
+    this.verifyState = new VerifyState(this);
     this.prepareState = new PrepareState(this);
     this.idleState = new IdleState(this);
     this.pauseState = new PauseState(this);
@@ -68,7 +70,8 @@ export default class Game {
   getMenuState() { return this.menuState; }
   getStartState() { return this.startState; }
   getLoadState() { return this.loadState; }
-  getPrepareState () { return this.prepareState }
+  getPrepareState() { return this.prepareState; }
+  getVerifyState() { return this.verifyState; }
   getIdleState() { return this.idleState; }
   getPauseState() { return this.pauseState; }
   getPowerState () { return this.powerState }

@@ -6,11 +6,11 @@ export default class LoadState extends State {
   }
   
   update(deltaTime) {
+    this.game.player.resetHole();
+    
     let holeFilename = this.game.holeBag.getHole();
     this.game.graphics.load(holeFilename);
     
-    this.game.player.resetHole();
-    
-    this.game.setState(this.game.getIdleState());
+    this.game.setState(this.game.getVerifyState());
   }
 }

@@ -14,7 +14,7 @@ export default class MainState extends State {
   stop() { this.hideElements(); }
   
   handleConfirm() {
-    this.game.setState(this.game.getIdleState());
+    this.game.setState(this.game.getStartState());
   }
   handleBack() {
     this.game.menuState.setState(this.game.menuState.getTitleState());

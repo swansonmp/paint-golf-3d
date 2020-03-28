@@ -2,19 +2,20 @@ import * as THREE from './lib/three.module.js';
 import { OrbitControls } from './lib/OrbitControls.js';
 import { ColladaLoader } from './lib/ColladaLoader.js';
 
+const HOLES_PATH = "./../assets/holes/";
+
 export default class Graphics {
   constructor(game, renderer) {
     this.game = game;
     this.renderer = renderer;
-    this.initScene();
   }
   
-  initScene() {
+  load(filename) {
     this.scene = new THREE.Scene();
     let graphics = this;
     let loader = new ColladaLoader();
     loader.load(
-      './../assets/holes/terrain.dae',
+      HOLES_PATH + filename,
       function(collada) {
         graphics.scene.add(collada.scene);                                    // Add collada scene
         graphics.scene.background = new THREE.Color(0x87ceeb);                // Set BG
@@ -23,21 +24,17 @@ export default class Graphics {
         graphics.terrainMesh = graphics.scene.getObjectByName("Plane");           // Get mesh and set its material
         graphics.terrainMesh.material = new THREE.MeshNormalMaterial( { flatShading: true, color: 0x22b14c } );
         
-        graphics.init();  // Finish initialization
+        // For raycasting
+        graphics.down = new THREE.Vector3(0, -1, 0);
+        graphics.raycaster = new THREE.Raycaster();
+        
+        graphics.initBall();
+        //graphics.initTree();
+        graphics.initCamera();
+        graphics.initControls();
       },
       function(data) { }
     );
-  }
-  
-  init() {
-    this.initBall();
-    //this.initTree();
-    this.initCamera();
-    this.initControls();
-    
-    // For raycasting
-    this.down = new THREE.Vector3(0, -1, 0);
-    this.raycaster = new THREE.Raycaster();
   }
   
   initCamera() {
@@ -98,10 +95,6 @@ export default class Graphics {
     this.renderer.render(this.scene, this.camera);
   }
   
-  load(filename) {
-    
-  }
-  
   getHeight(object) {
     this.raycaster.set(object, this.down);
     let intersects = this.raycaster.intersectObject(this.terrainMesh);
@@ -114,9 +107,11 @@ export default class Graphics {
   }
   
   onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);  
+    if (this.camera != undefined) {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
   }
   
 }
