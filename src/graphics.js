@@ -98,6 +98,10 @@ export default class Graphics {
     this.renderer.render(this.scene, this.camera);
   }
   
+  load(filename) {
+    
+  }
+  
   getHeight(object) {
     this.raycaster.set(object, this.down);
     let intersects = this.raycaster.intersectObject(this.terrainMesh);

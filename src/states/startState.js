@@ -6,9 +6,9 @@ export default class StartState extends State {
   }
   
   update(deltaTime) {
-    //this.game.player.reset()
-    //this.game.holeBag.reset();
-    //this.game.cardBag.reset();
+    this.game.player.reset()
+    this.game.holeBag.reset();
+    this.game.cardBag.reset();
     
     this.game.setState(this.game.getLoadState());
   }

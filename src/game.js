@@ -2,6 +2,9 @@ import Input from "./input.js";
 import Graphics from "./graphics.js";
 import UIHelper from "./uiHelper.js";
 
+import HoleBag from "./objects/holeBag.js";
+import CardBag from "./objects/cardBag.js";
+import Player from "./objects/player.js";
 import Ball from "./objects/ball.js";
 
 import MenuState from "./states/menuState.js";
@@ -27,6 +30,9 @@ export default class Game {
     this.uiHelper = new UIHelper();
     this.graphics = new Graphics(this, renderer);
     
+    this.holeBag = new HoleBag(this);
+    this.cardBag = new CardBag(this);
+    this.player = new Player(this);
     this.ball = new Ball(this);
     
     this.menuState = new MenuState(this);
