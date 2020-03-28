@@ -6,7 +6,6 @@ export default class Graphics {
   constructor(game, renderer) {
     this.game = game;
     this.renderer = renderer;
-    this.courseSize = { x: 100, z: 100 };
     this.initScene();
   }
   
@@ -15,7 +14,7 @@ export default class Graphics {
     let graphics = this;
     let loader = new ColladaLoader();
     loader.load(
-      './../assets/terrain.dae',
+      './../assets/holes/terrain.dae',
       function(collada) {
         graphics.scene.add(collada.scene);                                    // Add collada scene
         graphics.scene.background = new THREE.Color(0x87ceeb);                // Set BG
@@ -89,9 +88,9 @@ export default class Graphics {
   }
   
   updateCamera() {
-    this.camera.position.x = this.courseSize.x / 2 + this.ball.position.x;
+    this.camera.position.x = 50 + this.ball.position.x;
     this.camera.position.y = 75;
-    this.camera.position.z = this.courseSize.z / 2 + this.ball.position.z;
+    this.camera.position.z = 50 + this.ball.position.z;
     this.camera.lookAt(this.ball.position);
   }
   

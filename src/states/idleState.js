@@ -12,6 +12,7 @@ export default class IdleState extends State {
   
   render() { this.game.graphics.render(); }
   
+  handleSpace() { this.game.setState(this.game.getPowerState()); }
   handleEscape() { this.game.setState(this.game.getPauseState()); }
   
 }
