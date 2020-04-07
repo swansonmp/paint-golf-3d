@@ -8,6 +8,8 @@ export default class Graphics {
   constructor(game, renderer) {
     this.game = game;
     this.renderer = renderer;
+    
+    this.ballRadius = 0.5;
   }
   
   load(filename) {
@@ -68,9 +70,8 @@ export default class Graphics {
   }
   
   initBall() {
-    let radius = 0.5;
     this.ball = new THREE.Mesh( 
-      new THREE.SphereBufferGeometry(radius, 8, 8), 
+      new THREE.SphereBufferGeometry(this.ballRadius, 8, 8), 
       new THREE.MeshBasicMaterial({ color: 0xffffff })
     );
     this.scene.add(this.ball);
@@ -79,7 +80,7 @@ export default class Graphics {
   update(deltaTime) {
     // Set ball's graphical position
     this.ball.position.copy(this.game.ball.position);
-    this.ball.position.y += 0.5;
+    this.ball.position.y += this.ballRadius;
     
     //this.updateCamera();
   }
