@@ -45,7 +45,7 @@ export default class Ball {
     this.initSpinAngle = 0.0;
     
     // init velocity
-    this.velocity = this.getInitialVelocity(this.initSpeedMPH, this.smashFactor, this.initVerticalAngleDegrees, this.initHorizontalAngleDegrees);
+    this.velocity = this.getInitialVelocity(this.initSpeed, this.smashFactor, this.initVerticalAngleDegrees, this.initHorizontalAngleDegrees);
     
     // init angular velocity (spin rate)
     this.angularVelocity = this.getInitialSpin(this.initBackspinRPM, this.initSpinAngle);
@@ -59,9 +59,7 @@ export default class Ball {
     return velocity.normalize().multiplyScalar(speed * smashFactor);
   }
   
-  toMPS(n) { return n; }
-  
-  getInitialSpin = function(spinRPM, spinAngle) {
+  getInitialSpin(spinRPM, spinAngle) {
     let spin = new THREE.Vector3(0, 0, 0);
     spin.x = -1; // full backspin
     spin.y = Math.sin(spinAngle * Math.PI / 180);

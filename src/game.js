@@ -6,6 +6,7 @@ import HoleBag from "./objects/holeBag.js";
 import CardBag from "./objects/cardBag.js";
 import Player from "./objects/player.js";
 import Ball from "./objects/ball.js";
+import PowerBar from "./objects/powerbar.js";
 
 import MenuState from "./states/menuState.js";
 import StartState from "./states/startState.js";
@@ -35,6 +36,7 @@ export default class Game {
     this.cardBag = new CardBag(this);
     this.player = new Player(this);
     this.ball = new Ball(this);
+    this.powerbar = new PowerBar(this);
     
     this.menuState = new MenuState(this);
     this.startState = new StartState(this);
@@ -58,7 +60,7 @@ export default class Game {
     this.state.start();
   }
   
-  update(deltaTime) { this.state.update(deltaTime); }
+  update(deltaTime) { this.state.update(deltaTime); console.log(this.state.constructor.name); }
   render() { this.state.render(); }
   
   setState(state) {
